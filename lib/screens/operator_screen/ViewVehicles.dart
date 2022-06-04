@@ -1,8 +1,9 @@
-// ignore_for_file: unnecessary_new, prefer_const_constructors
+// ignore_for_file: unnecessary_new, prefer_const_constructors, non_constant_identifier_names, prefer_const_constructors_in_immutables
 
 import 'dart:html';
 
 import 'package:car_parking_system/classes/VehicleModel.dart';
+import 'package:car_parking_system/controller.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'dart:convert';
@@ -23,17 +24,39 @@ class View extends StatefulWidget {
 
 class _ViewState extends State<View> {
   // VehicleDataSource? vehicleDataSource;
-  Vehicle obj = new Vehicle();
   List<VehicleModel> _vehicles = [];
+  List<int> slots = [];
+  Widget _buildPopupDialog(BuildContext context, String vehicle_number) {
+    return new AlertDialog(
+      title: const Text('Vehicle'),
+      content: new Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(vehicle_number),
+        ],
+      ),
+      actions: <Widget>[
+        new ElevatedButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          child: const Text('Close'),
+          style: ElevatedButton.styleFrom(
+              primary: Color.fromARGB(255, 133, 21, 153)),
+        ),
+      ],
+    );
+  }
 
-  FutureBuilder _getVehiclesData(BuildContext context, int slots) {
+  FutureBuilder _getVehiclesData(BuildContext context) {
     return FutureBuilder<List<VehicleModel>>(
-      future: Vehicle().generateVehicleList(),
+      future: Controller().generateVehicleList(),
       builder:
           (BuildContext context, AsyncSnapshot<List<VehicleModel>> snapshot) {
         if (snapshot.hasData) {
           List<VehicleModel>? data = snapshot.data;
-          return _floors1(data, context, slots);
+          return _floors1(data, context);
         } else if (snapshot.hasError) {
           return Text("${snapshot.error}");
         }
@@ -42,34 +65,46 @@ class _ViewState extends State<View> {
     );
   }
 
-  ListView _floors1(data, BuildContext context, int slots) {
-    return ListView.builder(
-        itemCount: slots,
-        itemBuilder: (context, index) {
-          int slot_no = 0;
-          try {
-            slot_no = data[index].slot_no;
-          } catch (e) {
-            slot_no = 0;
-          }
-          if (slot_no != 0) {
-            return Card(
-                child: _tile(
-                    "${data[index].slot_no}",
-                    data[index].vehicle_number,
-                    data[index].owner_name,
-                    data[index].phone_number,
-                    context));
-          } else {
-            return _defaultTile(index, context);
-          }
-        });
+  check(List<int> slots, int slot) {
+    for (int i in slots) {
+      if (i == slot) {
+        print(slot);
+        return true;
+      }
+    }
+    return false;
+  }
+
+  Expanded _floors1(data, BuildContext context) {
+    return Expanded(
+      child: ListView.builder(
+          itemCount: widget.no_of_slots,
+          itemBuilder: (context, index) {
+            if (check(slots, index + 1)) {
+              return Card(
+                  child: _tile(
+                      "${data[index].slot_no}",
+                      data[index].vehicle_number,
+                      data[index].owner_name,
+                      data[index].phone_number,
+                      context));
+            } else {
+              return _defaultTile(index + 1, context);
+            }
+          }),
+    );
   }
 
   InkWell _tile(String slot_no, String vehicle_number, String name,
       String phone, BuildContext context) {
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) =>
+              _buildPopupDialog(context, vehicle_number),
+        );
+      },
       child: ListTile(
           title: RichText(
             text: TextSpan(
@@ -102,32 +137,28 @@ class _ViewState extends State<View> {
   }
 
   _load() async {
-    _vehicles = await obj.generateVehicleList();
+    _vehicles = await Controller().generateVehicleList();
+    for (VehicleModel v in _vehicles) {
+      slots.add(v.slot_no!);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        home: Scaffold(
-          appBar: AppBar(
-            title: Text(
-              widget.floorName,
-              style: TextStyle(fontSize: 24),
-            ),
-            backgroundColor: Color.fromARGB(255, 133, 21, 153),
-            shadowColor: Color.fromARGB(255, 62, 16, 70),
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text(
+            widget.floorName,
+            style: TextStyle(fontSize: 24),
           ),
-          drawer: const MenuDrawer(),
-          body: SingleChildScrollView(
-            child: Expanded(
-              child: SizedBox(
-                height: MediaQuery.of(context).size.height,
-                child: Center(
-                    child: _getVehiclesData(context, widget.no_of_slots)),
-              ),
-            ),
-          ),
-        ));
+          backgroundColor: Color.fromARGB(255, 133, 21, 153),
+          shadowColor: Color.fromARGB(255, 62, 16, 70),
+        ),
+        drawer: const MenuDrawer(),
+        body: Center(child: _getVehiclesData(context)),
+      ),
+    );
   }
 }

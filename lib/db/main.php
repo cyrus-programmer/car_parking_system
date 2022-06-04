@@ -70,11 +70,12 @@
         
     }
 
-    function viewVehicleList($conn){
+    function viewVehicleList($conn, $floor_no){
         try{
-            $query = "SELECT slot_no, name, phone, V.vehicle_number FROM vehicles AS V, vehicle_owner AS VO WHERE V.vehicle_number=VO.vehicle_number ORDER BY slot_no";
+            $query = "SELECT vehicles.slot_no, name, phone, vehicles.vehicle_number FROM slot inner join vehicles on slot.slot_no=vehicles.slot_no inner join vehicle_owner on vehicles.vehicle_number=vehicle_owner.vehicle_number WHERE floor_no = ? ORDER BY vehicles.slot_no";
             $db_data = array();
-            $result = $conn->query($query);
+            $result = $conn->prepare($query);
+            $result->execute([$floor_no]);
             $result1 = $result->fetchAll(PDO::FETCH_OBJ);
             
                 foreach($result1 as $row){

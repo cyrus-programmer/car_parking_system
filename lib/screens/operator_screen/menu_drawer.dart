@@ -1,12 +1,12 @@
 // ignore_for_file: avoid_unnecessary_containers
 
-import 'package:car_parking_system/screens/operator_screen/ViewVehicles.dart';
-import 'package:car_parking_system/screens/operator_screen/loginPage.dart';
+import 'package:car_parking_system/loginPage.dart';
 import 'package:car_parking_system/screens/operator_screen/MembershipScreen.dart';
 import 'package:car_parking_system/screens/operator_screen/VehicleScreen.dart';
 import 'package:car_parking_system/screens/operator_screen/home.dart';
 import 'package:flutter/material.dart';
 
+import '../../loginPage.dart';
 import '../../values/values.dart';
 import 'ViewFloor.dart';
 

@@ -1,14 +1,14 @@
 import 'package:car_parking_system/screens/operator_screen/menu_drawer.dart';
 import 'package:flutter/material.dart';
 
-class HomePage extends StatefulWidget {
-  HomePage({Key? key}) : super(key: key);
+class HomePage1 extends StatefulWidget {
+  HomePage1({Key? key}) : super(key: key);
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<HomePage1> createState() => _HomePage1State();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePage1State extends State<HomePage1> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -32,8 +32,7 @@ class _HomePageState extends State<HomePage> {
                 style: TextStyle(
                     color: Color.fromARGB(255, 133, 21, 153), fontSize: 30),
               ),
-              Text(
-                  "This is XYZ Car Parking System made by Data Pirates. This system will help in managing parking system from saving details\n of vehicles to generate reports."),
+              Text("Welcome to admin Dashboard"),
               // ElevatedButton(onPressed: _connect, child: Text("Click"))
             ],
           ),

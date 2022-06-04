@@ -280,7 +280,18 @@ class _AddVehicleState extends State<AddVehicle> {
                       primary: Color.fromARGB(255, 133, 21, 153), // background
                       onPrimary: Colors.white, // foreground
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      Controller().sendData(
+                          _ownerName.text,
+                          _phoneNumber.text,
+                          _modalNumber.text,
+                          _vehicleNumber.text,
+                          _charges.text,
+                          _identityNumber.text,
+                          _vehicleType.text,
+                          _slotNumber.text,
+                          _floorNumber.text);
+                    },
                     child: Text('Add'),
                   ),
                 ),

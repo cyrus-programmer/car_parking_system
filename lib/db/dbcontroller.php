@@ -16,7 +16,7 @@
         $addmembership->addMembership($conn,$_POST["owner_name"],$_POST["phone_number"],$_POST["modal_number"], $_POST["membership_number"], $_POST["start_date"],$_POST["expiry_date"],$_POST["CNIC"]);
     }elseif($_POST["service"]=="View Vehicles"){
         $viewVehicles = new DBServices();
-        $viewVehicles->viewVehicleList($conn);
+        $viewVehicles->viewVehicleList($conn, $_POST["floor_no"]);
     }elseif($_POST["service"]=="Floor Data"){
         $floorData = new DBServices();
         $floorData->floorData($conn);

@@ -1,3 +1,4 @@
+import 'package:car_parking_system/adminscreen/HomePage.dart';
 import 'package:car_parking_system/classes/VehicleModel.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'dart:convert';
@@ -8,19 +9,17 @@ import 'classes/FloorModel.dart';
 import 'screens/operator_screen/home.dart';
 
 class Controller {
-  getVehiclesDetails() async {
-    Future<List<VehicleModel>> generateVehicleList() async {
-      // Give your sever URL of get_employees_details.php file
-      var url = "http://localhost/carparkingsystem/dbcontroller.php";
-      var body = {"service": "View Vehicles"};
-      final response = await http.post(Uri.parse(url), body: body);
-      print(response.statusCode);
-      var list = json.decode(response.body);
-      List<VehicleModel> vehicles = await list
-          .map<VehicleModel>((json) => VehicleModel.fromJson(json))
-          .toList();
-      return vehicles;
-    }
+  Future<List<VehicleModel>> generateVehicleList() async {
+    // Give your sever URL of get_employees_details.php file
+    var url = "http://localhost/car_parking_system/lib/db/dbcontroller.php";
+    var body = {"service": "View Vehicles"};
+    final response = await http.post(Uri.parse(url), body: body);
+    print(response.body);
+    var list = json.decode(response.body);
+    List<VehicleModel> vehicles = await list
+        .map<VehicleModel>((json) => VehicleModel.fromJson(json))
+        .toList();
+    return vehicles;
   }
 
   Future<dynamic> sendData(
@@ -51,7 +50,8 @@ class Controller {
     };
     try {
       var response = await http.post(
-          Uri.parse("http://localhost/carparkingsystem/dbcontroller.php"),
+          Uri.parse(
+              "http://localhost/car_parking_system/lib/db/dbcontroller.php"),
           body: body,
           headers: headers);
       var data = json.decode(response.body);
@@ -100,7 +100,8 @@ class Controller {
     };
     try {
       var response = await http.post(
-          Uri.parse("http://localhost/carparkingsystem/dbcontroller.php"),
+          Uri.parse(
+              "http://localhost/car_parking_system/lib/db/dbcontroller.php"),
           body: body,
           headers: headers);
       var data = json.decode(response.body);
@@ -123,6 +124,9 @@ class Controller {
       if (check == "operator") {
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => HomePage()));
+      } else if (check == "manager") {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => HomePage1()));
       }
     } else {
       Fluttertoast.showToast(
@@ -137,7 +141,7 @@ class Controller {
   }
 
   Future<List<FloorModel>> checkFloor() async {
-    var url = "http://localhost/carparkingsystem/dbcontroller.php";
+    var url = "http://localhost/car_parking_system/lib/db/dbcontroller.php";
     var body = {"service": "Floor Data"};
     final response = await http.post(Uri.parse(url), body: body);
     var list = json.decode(response.body);
