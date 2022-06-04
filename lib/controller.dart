@@ -11,7 +11,7 @@ class Controller {
   getVehiclesDetails() async {
     Future<List<VehicleModel>> generateVehicleList() async {
       // Give your sever URL of get_employees_details.php file
-      var url = "http://localhost/carparkingsystem/logincheck.php";
+      var url = "http://localhost/carparkingsystem/dbcontroller.php";
       var body = {"service": "View Vehicles"};
       final response = await http.post(Uri.parse(url), body: body);
       print(response.statusCode);
@@ -51,7 +51,7 @@ class Controller {
     };
     try {
       var response = await http.post(
-          Uri.parse("http://localhost/carparkingsystem/logincheck.php"),
+          Uri.parse("http://localhost/carparkingsystem/dbcontroller.php"),
           body: body,
           headers: headers);
       var data = json.decode(response.body);
@@ -100,7 +100,7 @@ class Controller {
     };
     try {
       var response = await http.post(
-          Uri.parse("http://localhost/carparkingsystem/logincheck.php"),
+          Uri.parse("http://localhost/carparkingsystem/dbcontroller.php"),
           body: body,
           headers: headers);
       var data = json.decode(response.body);
@@ -137,7 +137,7 @@ class Controller {
   }
 
   Future<List<FloorModel>> checkFloor() async {
-    var url = "http://localhost/carparkingsystem/logincheck.php";
+    var url = "http://localhost/carparkingsystem/dbcontroller.php";
     var body = {"service": "Floor Data"};
     final response = await http.post(Uri.parse(url), body: body);
     var list = json.decode(response.body);

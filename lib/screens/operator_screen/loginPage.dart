@@ -1,7 +1,10 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:car_parking_system/controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
+// ignore: prefer_const_constructors
 class LoginPage extends StatefulWidget {
   LoginPage({Key? key}) : super(key: key);
 
@@ -37,7 +40,6 @@ class _LoginPageState extends State<LoginPage> {
                 style: TextStyle(
                     color: Color.fromARGB(255, 133, 21, 153), fontSize: 30),
               ),
-              // ignore: prefer_const_constructors
               SizedBox(
                 height: 30,
               ),
